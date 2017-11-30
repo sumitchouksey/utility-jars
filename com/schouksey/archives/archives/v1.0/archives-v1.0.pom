@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.schouksey.archives</groupId>
+    <artifactId>archives</artifactId>
+    <version>v1.0</version>
+    <modules>
+        <module>json-handler</module>
+        <module>utility-api</module>
+        <module>persistence-api</module>
+    </modules>
+    <packaging>pom</packaging>
+
+    <!-- MORE PROJECT INFORMATION -->
+    <name>archives</name>
+    <description>This archives project contains global dependencies for all the projects</description>
+    <organization>
+        <name>Spring Ocean</name>
+        <url>Spring Ocean</url>
+    </organization>
+    <inceptionYear>2017</inceptionYear>
+    <developers>
+        <developer>
+            <name>Sumit Chouksey</name>
+            <id>2315</id>
+            <email>sumitchouksey235@gmail.com</email>
+        </developer>
+    </developers>
+
+    <!-- PROPERTIES CONFIGURATION -->
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <java.version>1.8</java.version>
+        <github.global.server>github</github.global.server>
+    </properties>
+
+    <!--SPRING BOOT STARTER POM ARTIFACTS AS PARENT POM-->
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>1.5.4.RELEASE</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+
+    <!--DEPENDENCIES CONFIGURATION-->
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
+    </dependencies>
+    <scm>
+        <url>https://github.com/sumitchouksey/utility-jars.git</url>
+        <connection>scm:git:git@github.com/sumitchouksey/utility-jars.git</connection>
+        <developerConnection>scm:git:git@github.com/sumitchouksey/utility-jars.git</developerConnection>
+    </scm>
+    <distributionManagement>
+        <snapshotRepository>
+            <id>github</id>
+            <name>archives</name>
+            <url>file://${project.build.directory}/local-repo</url>
+        </snapshotRepository>
+        <repository>
+            <id>github</id>
+            <name>archives</name>
+            <url>file://${project.build.directory}/local-repo</url>
+        </repository>
+    </distributionManagement>
+    <build>
+        <plugins>
+            <!--MAVEN JAVA DOCS PLUGIN-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <version>2.8.1</version>
+                <configuration>
+                    <altDeploymentRepository>internal.repo::default::file://${project.build.directory}/local-repo</altDeploymentRepository>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>com.github.github</groupId>
+                <artifactId>site-maven-plugin</artifactId>
+                <version>0.12</version>
+                <configuration>
+                    <!-- git commit message -->
+                    <message>Maven artifacts for ${project.version}</message>
+                    <!-- disable webpage processing -->
+                    <noJekyll>true</noJekyll>
+                    <!-- matches distribution management repository url above -->
+                    <outputDirectory>${project.build.directory}/local-repo</outputDirectory>
+                    <!-- remote branch name -->
+                    <branch>refs/heads/master</branch>
+                    <!-- If you remove this then the old artifact will be removed and new
+                     one will replace. But with the merge tag you can just release by changing
+                                                      the version -->
+                    <merge>true</merge>
+                    <includes>
+                        <include>**/*</include>
+                    </includes>
+                    <!-- github repo name -->
+                    <repositoryName>utility-jars</repositoryName>
+                    <!-- github username -->
+                    <repositoryOwner>sumitchouksey</repositoryOwner>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>site</goal>
+                        </goals>
+                        <phase>deploy</phase>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>
